@@ -12,7 +12,6 @@
   , "nonew": true
   , "plusplus": false
   , "quotmark": true
-  , "regexp": false
   , "undef": true
   , "unused": true
   , "strict": false
@@ -33,9 +32,7 @@
   , "laxcomma": true
   , "loopfunc": true
   , "multistr": false
-  , "onecase": false
   , "proto": false
-  , "regexdash": false
   , "scripturl": true
   , "smarttabs": false
   , "shadow": false
