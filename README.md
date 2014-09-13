@@ -1,5 +1,5 @@
 # through-gulp
-[![Build Status](https://travis-ci.org/bornkiller/gulp-requirejs.svg)](https://travis-ci.org/bornkiller/gulp-requirejs)
+[![Build Status](https://travis-ci.org/bornkiller/through-gulp.svg?branch=master)](https://travis-ci.org/bornkiller/through-gulp)
 
 A tiny wrapper around Node streams. To make gulp plugin write easier.
 Inspired by through2, (https://github.com/rvagg/through2/), but much simplify
@@ -57,7 +57,7 @@ module.exports = sample;
 then use the plugin with gulp
 ```javascript
 var gulp = require('gulp');
-var sample = require(sample);
+var sample = require('sample');
 gulp.task('sample', function() {
 	return gulp.src(['source file'])
 	    .pipe(sample())
