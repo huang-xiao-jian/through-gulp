@@ -1,28 +1,35 @@
 var util = require('util');
 var Transform = require('stream').Transform;
-var PassThrough = require('stream').PassThrough;
 
-function throughGulp(options, transformFunction, flushFunction) {
-    if (typeof options == 'function') {
-      flushFunction = transformFunction;
-      transformFunction = options;
-      options = {}
-    }
+function throughGulp(transformFunction, flushFunction) {
+    var transform;
+    var flush;
+
     if (typeof transformFunction !== 'function') {
-        transformFunction = PassThrough;
+        transform = function(file, encoding, callback) {
+            this.push(file);
+            callback();
+        }
+    } else {
+        transform = transformFunction;
     }
+
     if (typeof flushFunction !== 'function') {
-        flushFunction = null;
+        flush = function(callback) {
+            callback();
+        };
+    } else {
+        flush = flushFunction;
     }
 
     util.inherits(Through, Transform);
-    function Through(options) {
-      Transform.call(options);
+    function Through() {
+      Transform.call(this, {objectMode: true});
     }
-    Through.prototype._transform = transformFunction;
-    Through.prototype._flush = flushFunction;
+    Through.prototype._transform = transform;
+    Through.prototype._flush = flush;
 
-    return new Through(options);
+    return new Through();
 }
 
 module.exports = throughGulp;

@@ -1,7 +1,7 @@
 var transform = require('stream').Transform;
 var gulp = require('gulp');
-var gutil = require('gulp-util');
-var throughGulp = require('../through-gulp.js');
+var assert = require('stream-assert');
+var through = require('../through-gulp.js');
 require('should');
 require('mocha');
 
@@ -10,24 +10,102 @@ describe('through-gulp', function () {
 
     });
 
-    it('should inherit transform', function () {
-        var expect = throughGulp({}, function(){}, function() {});
+    it('should implement transform class', function () {
+        var expect = through(function(){}, function() {});
         (expect instanceof transform).should.be.true;
-        (expect._transform).should.be.ok;
-        (expect._flush).should.be.ok;
+        (expect._transform).should.be.a.Function;
+        (expect._flush).should.be.a.Function;
     });
 
-    it.skip('should receive data from gulp', function (done) {
-        gutil.log('gulp data');
-        gulp.src('./fixtures/template.js')
-            .pipe(throughGulp(function(file, encoding, callback) {
-
-            }));
-        done();
+    it('should receive data from gulp', function (done) {
+        gulp.src('./test/fixtures/template.js')
+            .pipe(through(function(file, encoding, callback) {
+                (file.isBuffer()).should.be.true;
+                (file.isStream()).should.be.false;
+                callback();
+                done();
+            }))
     });
-/*    it('should pass through when transform not pass-in', function () {
-        gulp.src('./fixture/template.js')
-            .pipe(throughGulp())
 
-    });*/
+    it('should pass data to next when undeclared', function (done) {
+        gulp.src('./test/fixtures/template.js')
+            .pipe(through())
+            .pipe(assert.first(function(file) {
+                (file.isBuffer()).should.be.true;
+                (file.isStream()).should.be.false;
+                done();
+            }))
+    });
+
+    it('should pass data to next when declared', function (done) {
+        gulp.src('./test/fixtures/template.js')
+            .pipe(through(function(file, encoding, callback) {
+                this.push(file);
+                callback();
+            }))
+            .pipe(assert.first(function(file) {
+                (file.isBuffer()).should.be.true;
+                (file.isStream()).should.be.false;
+                done();
+            }))
+    });
+
+    it('should support single data transmission', function (done) {
+        gulp.src('./test/fixtures/template.js')
+            .pipe(through(function(file, encoding, callback) {
+                this.push(file);
+                callback();
+            }))
+            .pipe(assert.first(function(file) {
+                (file.contents.toString()).should.equal('define({});');
+            }))
+            .on('end', done);
+    });
+
+    it('should support single data transmission', function (done) {
+        gulp.src('./test/fixtures/template.js')
+            .pipe(through(function(file, encoding, callback) {
+                callback();
+            }, function(callback) {
+                this.push('beautiful');
+                callback();
+            }))
+            .pipe(assert.first(function(file) {
+                file.toString().should.equal('beautiful')
+            }))
+            .on('end', done);
+    });
+
+    it('should support multi data transmission', function (done) {
+        gulp.src('./test/fixtures/template.js')
+            .pipe(through(function(file, encoding, callback) {
+                this.push(file);
+                callback();
+            }), function(callback) {
+                this.push('beautiful');
+                callback();
+            })
+            .pipe(assert.first(function(file) {
+                (file.contents.toString()).should.equal('define({});');
+            }))
+            .pipe(assert.second(function(file) {
+                (file.toString()).should.equal('beautiful');
+            }))
+            .on('end', done);
+    });
+
+
+    it('should support file process', function (done) {
+        gulp.src('./test/fixtures/template.js')
+            .pipe(through(function(file, encoding, callback) {
+                var sample = new Buffer('love');
+                file.contents = Buffer.concat([sample, file.contents]);
+                this.push(file);
+                callback();
+            }))
+            .pipe(assert.first(function(file) {
+                (file.contents.toString()).should.equal('lovedefine({});');
+            }))
+            .on('end', done);
+    });
 });
