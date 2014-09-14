@@ -5,11 +5,16 @@ A tiny wrapper around Node streams. To make gulp plugin write easier.
 Inspired by through2, (https://github.com/rvagg/through2/), but much simplify
 for gulp-plugin only.
 
+## Install
+```js
+npm install through-gulp --save
+```
+
 ## API
 only one API provided to use.
 ```javascript
 var through = require('through-gulp');
-through(transformFunction, flushFunction);
+var stream = through(transformFunction, flushFunction);
 ```
 Both argument has default value to pipe data next without processing.
 
