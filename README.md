@@ -1,5 +1,8 @@
 # through-gulp
-[![Build Status](https://travis-ci.org/bornkiller/through-gulp.svg?branch=master)](https://travis-ci.org/bornkiller/through-gulp)
+![Build Status](https://img.shields.io/travis/bornkiller/through-gulp/master.svg?style=flat)
+![Coverage Report](http://img.shields.io/coveralls/bornkiller/through-gulp.svg?style=flat)
+![Package Dependency](https://david-dm.org/bornkiller/through-gulp.svg?style=flat)
+![Package DevDependency](https://david-dm.org/bornkiller/through-gulp/dev-status.svg?style=flat)
 
 A tiny wrapper around Node streams. To make gulp plugin write easier.
 Inspired by through2, (https://github.com/rvagg/through2/), but much simplify

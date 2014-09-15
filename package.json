@@ -28,6 +28,7 @@
     "gulp-jshint": "^1.8.4",
     "gulp-mocha": "^1.1.0",
     "jshint-stylish": "^0.4.0",
+    "istanbul": "^0.3.2",
     "mocha": "^1.21.4",
     "should": "^4.0.4",
     "stream-assert": "^1.0.1"
