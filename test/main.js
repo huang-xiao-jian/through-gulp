@@ -1,10 +1,12 @@
 var transform = require('stream').Transform;
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var assert = require('stream-assert');
 var through = require('../through-gulp.js');
+var PluginError = gutil.PluginError;
+var ERROR_NAME = 'through-gulp';
 require('should');
 require('mocha');
-
 describe('through-gulp', function () {
     beforeEach(function () {
 
@@ -94,7 +96,6 @@ describe('through-gulp', function () {
             .on('end', done);
     });
 
-
     it('should support file process', function (done) {
         gulp.src('./test/fixtures/template.js')
             .pipe(through(function(file, encoding, callback) {
@@ -107,5 +108,21 @@ describe('through-gulp', function () {
                 (file.contents.toString()).should.equal('lovedefine({});');
             }))
             .on('end', done);
+    });
+
+    it('should support event emit', function (done) {
+        gulp.src('./test/fixtures/template.js')
+            .pipe(through(function(file, encoding, callback) {
+                var error = new PluginError(ERROR_NAME, 'missing something');
+                this.emit('error', error);
+                callback();
+            }, function(callback) {
+                this.push('beautiful');
+                callback();
+            }))
+            .on('error', function(err) {
+                err.should.be.a.Error;
+                done();
+            });
     });
 });

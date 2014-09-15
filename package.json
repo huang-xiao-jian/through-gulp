@@ -18,8 +18,8 @@
     "gulp-plugin"
   ],
   "author": "bornkiller <hjj491229492@hotmail.com> (https://github.com/bornkiller)",
-  "engines" : {
-    "node" : ">=0.10.0" 
+  "engines": {
+    "node": ">=0.10.0"
   },
   "license": "MIT",
   "dependencies": {},
@@ -27,8 +27,9 @@
     "gulp": "^3.8.7",
     "gulp-jshint": "^1.8.4",
     "gulp-mocha": "^1.1.0",
-    "jshint-stylish": "^0.4.0",
+    "gulp-util": "^3.0.1",
     "istanbul": "^0.3.2",
+    "jshint-stylish": "^0.4.0",
     "mocha": "^1.21.4",
     "should": "^4.0.4",
     "stream-assert": "^1.0.1"
