@@ -14,12 +14,43 @@ npm install through-gulp --save
 ```
 
 ## API
-only one API provided to use.
+One main API provided to use.
 ```javascript
 var through = require('through-gulp');
 var stream = through(transformFunction, flushFunction);
 ```
 Both argument has default value to pipe data next without processing.
+if just for files map or files filter, two shortcut method provided as well.
+
+```javascript
+// './test/fixtures/template.js'
+define({});
+// './test/fixtures/destiny.js'
+define(function(){});
+```
+
+```javascript
+gulp.src(['./test/fixtures/template.js','./test/fixtures/destiny.js'])
+    .pipe(through.map(function(file) {
+        file.contents = Buffer.concat([new Buffer('love '), file.contents]);
+        return file;
+    }))
+    .pipe(assert.first(function(file) {
+        (file.contents.toString()).should.equal('love define({});');
+    }))
+    .on('end', done);
+```
+
+```javascript
+gulp.src(['./test/fixtures/template.js','./test/fixtures/destiny.js'])
+    .pipe(through.filter(function(file) {
+        return file.contents.toString().indexOf('function') !== -1;
+    }))
+    .pipe(assert.first(function(file) {
+        (file.contents.toString()).should.equal('define(function(){});');
+    }))
+    .on('end', done);
+```
 
 ## Usage
 A simple demonstrate to write a gulp-plugin with through-gulp.
