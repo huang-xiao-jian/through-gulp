@@ -8,9 +8,6 @@ var ERROR_NAME = 'through-gulp';
 require('should');
 require('mocha');
 describe('through-gulp', function () {
-    beforeEach(function () {
-
-    });
 
     it('should implement transform class', function () {
         var expect = through(function(){}, function() {});
@@ -99,13 +96,13 @@ describe('through-gulp', function () {
     it('should support file process', function (done) {
         gulp.src('./test/fixtures/template.js')
             .pipe(through(function(file, encoding, callback) {
-                var sample = new Buffer('love');
+                var sample = new Buffer('love ');
                 file.contents = Buffer.concat([sample, file.contents]);
                 this.push(file);
                 callback();
             }))
             .pipe(assert.first(function(file) {
-                (file.contents.toString()).should.equal('lovedefine({});');
+                (file.contents.toString()).should.equal('love define({});');
             }))
             .on('end', done);
     });

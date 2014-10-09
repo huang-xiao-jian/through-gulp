@@ -1,7 +1,8 @@
 var util = require('util');
 var Transform = require('stream').Transform;
+var throughGulp;
 
-function throughGulp(transformFunction, flushFunction) {
+throughGulp = function(transformFunction, flushFunction) {
     var transform;
     var flush;
 
@@ -30,6 +31,22 @@ function throughGulp(transformFunction, flushFunction) {
     Through.prototype._flush = flush;
 
     return new Through();
-}
+};
 
-module.exports = throughGulp;
+throughGulp.map = function(fileMaps) {
+    return throughGulp(function(file, encoding, callback) {
+        this.push(fileMaps(file));
+        callback();
+    });
+};
+
+throughGulp.filter = function(fileFilter) {
+    return throughGulp(function(file, encoding, callback) {
+        if (fileFilter(file)) {
+            this.push(file);
+        }
+        callback();
+    });
+};
+
+exports = module.exports = throughGulp;
