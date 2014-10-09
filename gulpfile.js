@@ -5,14 +5,14 @@ var mocha = require('gulp-mocha');
 var through = require('./through-gulp');
 
 gulp.task('jshint', function() {
-  return gulp.src(['through-gulp.js', 'test/main.js'])
+  return gulp.src(['through-gulp.js', 'test/main.js', 'test/extends.js'])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish));
 });
 
 
 gulp.task('test', ['jshint'], function () {
-    return gulp.src('test/main.js', {read: false})
+    return gulp.src(['test/main.js', 'test/extends.js'], {read: false})
         .pipe(mocha());
 });
 
