@@ -1,6 +1,6 @@
 {
   "name": "through-gulp",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A tiny wrapper around Node stream Transform, to simplify gulp plulgins development",
   "main": "through-gulp.js",
   "scripts": {
@@ -24,13 +24,13 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "gulp": "^3.8.7",
-    "gulp-jshint": "^1.8.5",
+    "gulp": "^3.8.9",
+    "gulp-jshint": "^1.8.6",
     "gulp-mocha": "^1.1.1",
     "gulp-util": "^3.0.1",
     "istanbul": "^0.3.2",
     "jshint-stylish": "^0.4.0",
-    "mocha": "^1.21.4",
+    "mocha": "^1.21.5",
     "should": "^4.0.4",
     "stream-assert": "^1.2.0"
   }

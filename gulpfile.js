@@ -26,4 +26,4 @@ gulp.task('example', function() {
 	    	callback();
 	    }))
 	    .pipe(gulp.dest('example'));
-})
+});
