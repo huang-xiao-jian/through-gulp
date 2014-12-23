@@ -6,7 +6,7 @@
 
 A tiny wrapper around Node streams. To make gulp plugin write easier.
 Inspired by through2, (https://github.com/rvagg/through2/), but much simplify
-for gulp-plugin only.
+for gulp-plugin development.
 
 ## Install
 ```js
@@ -15,10 +15,12 @@ npm install through-gulp --save
 
 ## API
 One main API provided to use.
+
 ```javascript
 var through = require('through-gulp');
 var stream = through(transformFunction, flushFunction);
 ```
+
 Both argument has default value to pipe data next without processing.
 if just for files map or files filter, two shortcut method provided as well.
 
@@ -30,7 +32,8 @@ define(function(){});
 ```
 
 ```javascript
-gulp.src(['./test/fixtures/template.js','./test/fixtures/destiny.js'])
+it('something should work right', function(done) {
+  gulp.src(['./test/fixtures/template.js','./test/fixtures/destiny.js'])
     .pipe(through.map(function(file) {
         file.contents = Buffer.concat([new Buffer('love '), file.contents]);
         return file;
@@ -38,23 +41,26 @@ gulp.src(['./test/fixtures/template.js','./test/fixtures/destiny.js'])
     .pipe(assert.first(function(file) {
         (file.contents.toString()).should.equal('love define({});');
     }))
-    .on('end', done);
+    .pipe(assert.end(done));
+})
 ```
 
 ```javascript
-gulp.src(['./test/fixtures/template.js','./test/fixtures/destiny.js'])
+it('something should work right', function(done) {
+  gulp.src(['./test/fixtures/template.js','./test/fixtures/destiny.js'])
     .pipe(through.filter(function(file) {
         return file.contents.toString().indexOf('function') !== -1;
     }))
     .pipe(assert.first(function(file) {
         (file.contents.toString()).should.equal('define(function(){});');
     }))
-    .on('end', done);
+    .pipe(assert.end(done));
+})
 ```
 
 ## Usage
-A simple demonstrate to write a gulp-plugin with through-gulp.
-If you know nothing about gulp plugin, check this
+A simple demonstrate about write gulp-plugin with through-gulp.
+If you know nothing about gulp plugin, check this first.
 (https://github.com/gulpjs/gulp/blob/master/docs/writing-a-plugin/guidelines.md)
 
 
@@ -93,15 +99,18 @@ function sample() {
 module.exports = sample;
 ```
 
+
 then use the plugin with gulp
+
 ```javascript
 var gulp = require('gulp');
 var sample = require('sample');
 gulp.task('sample', function() {
 	return gulp.src(['source file'])
-	    .pipe(sample())
-	    .pipe(gulp.dest('file destiny'))
+	  .pipe(sample())
+	  .pipe(gulp.dest('file destiny'))
 });
 ```
+
 ## Contact
 *Email: hjj491229492@hotmail.com*.
