@@ -1,8 +1,8 @@
 {
   "name": "through-gulp",
-  "version": "0.3.5",
+  "version": "0.3.7",
   "description": "A tiny wrapper around Node stream Transform, to simplify gulp plulgins development",
-  "main": "through-gulp.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/bornkiller/through-gulp.git"

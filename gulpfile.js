@@ -1,19 +1,16 @@
 var gulp   = require('gulp');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
-var through = require('./through-gulp');
+var through = require('./index.js');
 
 gulp.task('jshint', function() {
-  return gulp.src(['through-gulp.js', 'test/main.js', 'test/extends.js'])
+  gulp.src(['index.js'])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish));
 });
 
 gulp.task('example', function() {
-	return gulp.src(['package.json'])
-    .pipe(through(function(file, encoding, callback) {
-     	this.push(file);
-	  	callback();
-	  }))
-	  .pipe(gulp.dest('example'));
+  gulp.src(['package.json'])
+    .pipe(through())
+	.pipe(gulp.dest('example'));
 });

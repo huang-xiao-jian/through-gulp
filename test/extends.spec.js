@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var assert = require('stream-assert');
-var through = require('../through-gulp.js');
+var through = require('../index.js');
 var should = require('should');
 
 describe('through-gulp shortcut method', function () {
