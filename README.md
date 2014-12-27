@@ -6,7 +6,7 @@
 
 A tiny wrapper around Node streams. To make gulp plugin write easier.
 Inspired by through2, (https://github.com/rvagg/through2/), but much simplify
-for gulp-plugin development.
+for gulp-plugin development for some reason.
 
 ## Install
 ```js
