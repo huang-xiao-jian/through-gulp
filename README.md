@@ -71,18 +71,18 @@ var through = require('through-gulp');
 function sample() {
   // creating a stream through which each file will pass
   var stream = through(function(file, encoding,callback) {
-  	  // do whatever necessary to process the file 
-      if (file.isNull()) {
+  	// do whatever necessary to process the file
+    if (file.isNull()) {
 
-      }
-      if (file.isBuffer()) {
+    }
+    if (file.isBuffer()) {
 
-      }
-      if (file.isStream()) {
+    }
+    if (file.isStream()) {
 
-      }
-      // just pipe data next, or just do nothing to process file later in flushFunction
-      // never forget callback to indicate that the file has been processed.
+    }
+    // just pipe data next, or just do nothing to process file later in flushFunction
+    // never forget callback to indicate that the file has been processed.
       this.push(file);
       callback();
     },function(callback) {
@@ -99,16 +99,15 @@ function sample() {
 module.exports = sample;
 ```
 
-
 then use the plugin with gulp
 
 ```javascript
 var gulp = require('gulp');
 var sample = require('sample');
 gulp.task('sample', function() {
-	return gulp.src(['source file'])
-	  .pipe(sample())
-	  .pipe(gulp.dest('file destiny'))
+  return gulp.src(['source file'])
+	.pipe(sample())
+	.pipe(gulp.dest('file destiny'))
 });
 ```
 

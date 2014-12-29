@@ -1,7 +1,7 @@
 /**
  * Expose function to generate transform stream
  * @modules through-gulp
- * @versions v0.3.7
+ * @versions v0.3.8
  */
 
 /**
@@ -32,14 +32,6 @@ var util = require('util');
 var stream = require('stream');
 var through;
 
-/**
- * Define transform stream structure
- * @constructor
- */
-function Transform() {
-  stream.Transform.call(this, {objectMode: true});
-}
-util.inherits(Transform, stream.Transform);
 
 // Default value for stream.Transform
 function defaultTransformFunction(file, encoding, callback) {
@@ -57,6 +49,14 @@ function defaultFlushFunction(callback) {
  * @returns {transformStream}
  */
 through = function(transformFunction, flushFunction) {
+  /**
+   * Define transform stream structure
+   * @constructor
+   */
+  function Transform() {
+    stream.Transform.call(this, {objectMode: true});
+  }
+  util.inherits(Transform, stream.Transform);
 
   // use default function when not pass in
   Transform.prototype._transform =
@@ -72,6 +72,7 @@ through = function(transformFunction, flushFunction) {
   return new Transform();
 };
 
+
 /**
  * shortcut method for map files
  * @param {fileMap} map
@@ -83,6 +84,7 @@ through.map = function(map) {
     callback();
   });
 };
+
 
 /**
  * shortcut method for filter files

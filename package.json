@@ -1,6 +1,6 @@
 {
   "name": "through-gulp",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "A tiny wrapper around Node stream Transform, to simplify gulp plulgins development",
   "main": "index.js",
   "repository": {
