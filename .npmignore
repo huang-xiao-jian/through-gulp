@@ -1,3 +1,5 @@
 test
 .jshintrc
 .travis.yml
+.DS_Store
+coverage
