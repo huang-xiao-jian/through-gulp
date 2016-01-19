@@ -4,7 +4,6 @@
 var fs = require('fs');
 var path = require('path');
 var gulp = require('gulp');
-var gutil = require('gulp-util');
 var should = require('should');
 var through = require('../index.js');
 
