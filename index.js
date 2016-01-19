@@ -1,28 +1,9 @@
 /**
- * Expose function to generate transform stream
- * @modules through-gulp
- * @versions v0.3.8
- */
-
-/**
- * @typedef {object} transformStream;
- */
-
-/**
- * @typedef {function} fileMap
- * @example resolve file map
- * function(file) {
- *   file.contents = Buffer.concat([new Buffer('love '), file.contents]);
- *   return file;
- * })
- */
-
-/**
- * @typedef {function} fileFilter
- * @example resolve file filter
- * function(file) {
- *   return file.contents.toString().indexOf('define') !== -1;
- * })
+ * @description - Expose function to generate transform stream
+ * @author bornkiller <hjj491229492@hotmail.com>
+ * @version v0.5.0
+ * @copyright bornkiller personal project
+ * @license MIT
  */
 
 /**
@@ -30,72 +11,40 @@
  */
 var util = require('util');
 var stream = require('stream');
-var through;
-
-
-// Default value for stream.Transform
-function defaultTransformFunction(file, encoding, callback) {
-  this.push(file);
-  callback();
-}
-function defaultFlushFunction(callback) {
-  callback();
-}
+var _ = require('underscore');
+var noop = require('./noop/implement');
 
 /**
- * Exposed function generate transform stream
- * @param {function} transformFunction
- * @param {function} flushFunction
+ * @module through-gulp
+ * @type function
+ */
+exports = module.exports = through;
+
+/**
+ * @typedef {object} transformStream;
+ * @property {function} _transform
+ * @property {function} _flush
+ */
+
+/**
+ * @description - Exposed function generate transform stream
+ * @param {function} transform
+ * @param {function} flush
+ * @param {number} highWaterMark
  * @returns {transformStream}
  */
-through = function(transformFunction, flushFunction) {
+function through(transform, flush, highWaterMark) {
   /**
-   * Define transform stream structure
+   * @description Define transform stream structure
    * @constructor
    */
   function Transform() {
-    stream.Transform.call(this, {objectMode: true});
+    stream.Transform.call(this, {objectMode: true, highWaterMark: highWaterMark || 16});
   }
   util.inherits(Transform, stream.Transform);
 
-  // use default function when not pass in
-  Transform.prototype._transform =
-    typeof transformFunction === 'function' ?
-    transformFunction :
-    defaultTransformFunction;
-
-  Transform.prototype._flush =
-    typeof flushFunction === 'function' ?
-    flushFunction :
-    defaultFlushFunction;
+  Transform.prototype._transform = _.isFunction(transform) ? transform : noop.transform;
+  Transform.prototype._flush = _.isFunction(flush) ? flush : noop.flush;
 
   return new Transform();
-};
-
-
-/**
- * shortcut method for map files
- * @param {fileMap} map
- * @returns {transformStream}
- */
-through.map = function(map) {
-  return through(function(file, encoding, callback) {
-    this.push(map(file));
-    callback();
-  });
-};
-
-
-/**
- * shortcut method for filter files
- * @param {fileFilter} filter
- * @returns {transformStream}
- */
-through.filter = function(filter) {
-  return through(function(file, encoding, callback) {
-    if (filter(file)) this.push(file);
-    callback();
-  });
-};
-
-exports = module.exports = through;
+}
