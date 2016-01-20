@@ -14,7 +14,7 @@ npm install through-gulp --save
 ```
 
 ## API
-One main API provided to use.
+Expose single API..
 
 ```javascript
 var through = require('through-gulp');
@@ -22,41 +22,7 @@ var stream = through(transformFunction, flushFunction);
 ```
 
 Both argument has default value to pipe data next without processing.
-if just for files map or files filter, two shortcut method provided as well.
 
-```javascript
-// './test/fixtures/template.js'
-define({});
-// './test/fixtures/destiny.js'
-define(function(){});
-```
-
-```javascript
-it('something should work right', function(done) {
-  gulp.src(['./test/fixtures/template.js','./test/fixtures/destiny.js'])
-    .pipe(through.map(function(file) {
-        file.contents = Buffer.concat([new Buffer('love '), file.contents]);
-        return file;
-    }))
-    .pipe(assert.first(function(file) {
-        (file.contents.toString()).should.equal('love define({});');
-    }))
-    .pipe(assert.end(done));
-})
-```
-
-```javascript
-it('something should work right', function(done) {
-  gulp.src(['./test/fixtures/template.js','./test/fixtures/destiny.js'])
-    .pipe(through.filter(function(file) {
-        return file.contents.toString().indexOf('function') !== -1;
-    }))
-    .pipe(assert.first(function(file) {
-        (file.contents.toString()).should.equal('define(function(){});');
-    }))
-    .pipe(assert.end(done));
-})
-```
 
 ## Usage
 A simple demonstrate about write gulp-plugin with through-gulp.
@@ -67,6 +33,9 @@ If you know nothing about gulp plugin, check this first.
 ```javascript
 // PLUGIN_NAME: sample
 var through = require('through-gulp');
+
+// exporting the plugin 
+module.exports = sample;
 
 function sample() {
   // creating a stream through which each file will pass
@@ -85,7 +54,7 @@ function sample() {
     // never forget callback to indicate that the file has been processed.
       this.push(file);
       callback();
-    },function(callback) {
+    }, function(callback) {
       // just pipe data next, just callback to indicate that the stream's over
       this.push(something);
       callback();
@@ -94,9 +63,6 @@ function sample() {
   // returning the file stream
   return stream;
 };
-
-// exporting the plugin 
-module.exports = sample;
 ```
 
 then use the plugin with gulp
@@ -105,7 +71,7 @@ then use the plugin with gulp
 var gulp = require('gulp');
 var sample = require('sample');
 gulp.task('sample', function() {
-  return gulp.src(['source file'])
+  gulp.src(['source file'])
 	.pipe(sample())
 	.pipe(gulp.dest('file destiny'))
 });
