@@ -22,6 +22,7 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "coveralls": "^2.11.6",
     "gulp": "^3.8.10",
     "istanbul": "^0.3.5",
     "mocha": "^2.3.4",
