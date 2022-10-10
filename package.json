@@ -16,9 +16,10 @@
   ],
   "author": "bornkiller <hjj491229492@hotmail.com> (https://github.com/bornkiller)",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=10.13.0"
   },
   "dependencies": {
+    "plugin-error": "^2.0.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
